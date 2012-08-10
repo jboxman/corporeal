@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'data_mapper'
+require 'chef/mixin/deep_merge'
 
 DataMapper::Property::String.length(255)
 
@@ -13,7 +14,9 @@ module Corporeal
 					property :id,
 							DataMapper::Property::Serial
 					property :name,
-							DataMapper::Property::String, :required => true
+							DataMapper::Property::String,
+							:required => true,
+							:unique => true
 					property :arch,
 							DataMapper::Property::Enum[:i386, :x86_64]
 					property :initrd_path,
@@ -27,6 +30,8 @@ module Corporeal
 					property :kickstart_variables,
 							DataMapper::Property::Object,
 							:default => lambda {Hash.new}
+
+					validates_format_of :name, :with => /^[A-Za-z0-9_-]+$/
 				end
 			end
 		end
