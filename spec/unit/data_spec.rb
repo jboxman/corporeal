@@ -1,6 +1,31 @@
 require "corporeal/data"
 
 shared_context "setup" do |klass|
+	def create_distro(name)
+		Corporeal::Data::Distro.create(
+			:name => name,
+			:arch => 'x86_64',
+			:initrd_path => '/var/lib/tftp/images/initrd.img',
+			:kernel_path => '/var/lib/tftp/images/linuz',
+			:kernel_cmdline => 'root=/dev/mapper/vg-root ro LANG=en_US.UTF-8',
+			:kickstart_path => 'tpl/ks/default.erb',
+			:kickstart_variables => {"key" => "val"})
+	end
+
+	def create_profile(name, distro)
+		Corporeal::Data::Profile.create(
+			:name => name,
+			:distro => Corporeal::Data::Distro.first(:name => distro))
+	end
+
+	def create_system(name, profile)
+		o = Corporeal::Data::System.create(
+			:name => name,
+			:profile => Corporeal::Data::Profile.first(:name => profile),
+			:ip => IPAddr.new('172.16.100.1'),
+			:hwaddr => 'ff:ff:ff:ff:ff:ff')
+	end
+
 	before do
 		DataMapper::Logger.new($stdout, :info)
 		DataMapper.setup(:default, 'sqlite::memory:')
@@ -29,21 +54,10 @@ end
 
 describe Corporeal::Data::Distro do
 
-	def create(name)
-		Corporeal::Data::Distro.create(
-			:name => name,
-			:arch => 'x86_64',
-			:initrd_path => '/var/lib/tftp/images/initrd.img',
-			:kernel_path => '/var/lib/tftp/images/linuz',
-			:kernel_cmdline => 'root=/dev/mapper/vg-root ro LANG=en_US.UTF-8',
-			:kickstart_path => 'tpl/ks/default.erb',
-			:kickstart_variables => {"key" => "val"})
-	end
-
 	include_context "setup", Corporeal::Data::Distro
 	include_examples "common"
 
-	let(:distro) { create("somelinux") ; Corporeal::Data::Distro.first }
+	let(:distro) { create_distro("somelinux") ; Corporeal::Data::Distro.first }
 
 	it "should require arch" do
 		distro.arch = nil
@@ -88,10 +102,94 @@ describe Corporeal::Data::Profile do
 
 	include_context "setup", Corporeal::Data::Profile
 	include_examples "common"
+
+	before do
+		create_distro("profile_linux")
+	end
+
+	let(:profile) do
+		create_profile("prof", "profile_linux")
+		Corporeal::Data::Profile.first
+	end
+
+	it "must belong to a Distro" do
+		o = create_profile("aprof", nil)
+		o.errors[:distro].should_not be_nil
+	end
+
+	it "should merge attributes with its Distro" do
+		o = {
+			:kernel_path => '/var/lib/tftp/images/linux.img',
+			:initrd_path => '/var/lib/tftp/images/alternate.img'
+		}
+
+		o.each do |k, v|
+			profile.update(k => v)
+			profile.merged_attributes[k].should eq(v)
+		end
+
+		# Should probably be its own set of tests.
+		#
+		h = {"merged_key" => "merged_val"}
+		h_merged = {"merged_key" => "merged_val", "key" => "val"}
+		profile.update(:kickstart_variables => h)
+
+		profile.merged_attributes[:kickstart_variables].should eq(h_merged)
+	end
+
 end
 
 describe Corporeal::Data::System do
 
 	include_context "setup", Corporeal::Data::System
 	include_examples "common"
+
+	before do
+		create_distro("prod_distro")
+		create_profile("production", "prod_distro")
+	end
+
+	let(:server) do
+		create_system("server", "production")
+	end
+
+	it "must belong to a Profile" do
+		o = create_system("asys", nil)
+		o.errors[:profile].should_not be_nil
+	end
+
+	it "should transform hw addr to upper case" do
+		hwaddr = '00:1e:ff:ff:ff:ff'
+		server.update(:hwaddr => hwaddr)
+		server.attributes[:hwaddr].should == hwaddr.upcase
+	end
+
+	it "should have an IP address described by IPAddr" do
+		server.attributes[:ip].should be_a_kind_of(IPAddr)
+	end
+
+	it "should require an IP address" do
+		server.update(:ip => 'just a string')
+		server.save
+		server.errors[:ip].should_not be_nil
+
+		server.update(:ip => IPAddr.new('10.10.10.1'))
+		server.save
+		server.errors[:ip].should eq([])
+	end
+
+	it "should require a hardware address" do
+		server.update(:hwaddr => nil)
+		server.save
+		server.errors[:hwaddr].should_not be_nil
+	end
+
+	it "should have a valid hardware address" do
+		server.update(:hwaddr => '00___00')
+		server.save
+		server.errors[:hwaddr].should_not be_nil
+	end
+
+	it "should merge attributes with its profile" do
+	end
 end
