@@ -10,7 +10,7 @@ module Corporeal
 
 			%w{edit create}.each do |t|
 				tasks[t].options.merge!(
-					{:distro => Thor::Option.parse(:distro, :required)})
+					{:distro_name => Thor::Option.parse(:distro_name, :required)})
 			end
 
 			private

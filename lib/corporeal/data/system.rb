@@ -19,7 +19,7 @@ module Corporeal
 			validates_presence_of :profile
 			validates_presence_of :hwaddr, :if => lambda {|o| !o.hwaddr.nil? && o.hwaddr.length == 17}
 			validates_format_of :hwaddr, :with => HWADDR_REGEXP
-			validates_presence_of :ip, :if => lambda {|o| !o.ip.nil? && o.ip.is_a?(IPAddr)}
+			validates_uniqueness_of :hwaddr
 
 			# System Attributes
 			property :hwaddr, String
@@ -44,9 +44,17 @@ module Corporeal
 				end)
 			end
 
+			def profile_name=(value)
+				self.profile = Data::Profile.first(:name => value)
+			end
+
+			def profile_name
+				self.profile.name
+			end
+
 			def merged_attributes
 				Chef::Mixin::DeepMerge.deep_merge(
-					attributes, distro.merged_attributes)
+					attributes, profile.merged_attributes)
 			end
 		end
 	end

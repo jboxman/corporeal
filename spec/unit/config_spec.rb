@@ -1,5 +1,4 @@
-require "fileutils"
-
+require File.join(File.dirname(__FILE__), "spec_helper")
 require "corporeal/config"
 
 describe Corporeal::Config do

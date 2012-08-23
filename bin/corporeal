@@ -5,6 +5,6 @@ $:.unshift(lib) unless $:.include?(lib)
 
 require 'config/boot'
 require 'corporeal/cli'
-require 'corporeal/action'
+require 'corporeal/task'
 
 Corporeal::Cli.start

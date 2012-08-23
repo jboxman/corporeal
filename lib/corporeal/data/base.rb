@@ -15,8 +15,7 @@ module Corporeal
 							DataMapper::Property::Serial
 					property :name,
 							DataMapper::Property::String,
-							:required => true,
-							:unique => true
+							:required => true
 					property :arch,
 							DataMapper::Property::Enum[:i386, :x86_64]
 					property :initrd_path,
@@ -24,7 +23,8 @@ module Corporeal
 					property :kernel_path,
 							DataMapper::Property::Text
 					property :kernel_cmdline,
-							DataMapper::Property::Text
+							DataMapper::Property::Object,
+							:default => lambda {Hash.new}
 					property :kickstart_path,
 							DataMapper::Property::String
 					property :kickstart_variables,
@@ -32,7 +32,12 @@ module Corporeal
 							:default => lambda {Hash.new}
 
 					validates_format_of :name, :with => /^[A-Za-z0-9_-]+$/
+					validates_uniqueness_of :name
 				end
+			end
+
+			# Override
+			def merged_attributes
 			end
 		end
 	end

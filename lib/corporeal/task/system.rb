@@ -10,7 +10,7 @@ module Corporeal
 
 			%w{edit create}.each do |t|
 				tasks[t].options.merge!(
-					{:profile => Thor::Option.parse(:profile, :required)})
+					{:profile_name => Thor::Option.parse(:profile_name, :required)})
 			end
 
 			private

@@ -11,6 +11,14 @@ module Corporeal
 
 			validates_presence_of :distro
 
+			def distro_name=(value)
+				self.distro = Data::Distro.first(:name => value)
+			end
+
+			def distro_name
+				self.distro.name
+			end
+
 			def merged_attributes
 				Chef::Mixin::DeepMerge.deep_merge(attributes, distro.attributes)
 			end

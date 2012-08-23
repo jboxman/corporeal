@@ -7,7 +7,11 @@ shared_context "setup" do |klass|
 			:arch => 'x86_64',
 			:initrd_path => '/var/lib/tftp/images/initrd.img',
 			:kernel_path => '/var/lib/tftp/images/linuz',
-			:kernel_cmdline => 'root=/dev/mapper/vg-root ro LANG=en_US.UTF-8',
+			:kernel_cmdline => {
+		                        "root" => "/dev/mapper/vg-root",
+		                        "ro" => nil,
+		                        "LANG"=> "en_US.UTF-8"
+		                       },
 			:kickstart_path => 'tpl/ks/default.erb',
 			:kickstart_variables => {"key" => "val"})
 	end

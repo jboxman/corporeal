@@ -1,0 +1,15 @@
+DEFAULT menu
+PROMPT 0
+MENU TITLE Corporeal
+TIMEOUT 200
+TOTALTIMEOUT 6000
+ONTIMEOUT 30
+
+LABEL local
+	MENU LABEL (local)
+	MENU DEFAULT
+	LOCALBOOT -1
+
+<%= @pxe_menu_items %>
+
+MENU end

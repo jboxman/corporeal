@@ -9,7 +9,7 @@ module Corporeal
 			end
 
 			def config_path
-				File.join(root, 'config.yml')
+				File.join(root, 'config', 'config.yml')
 			end
 
 			def get(key)
@@ -37,6 +37,9 @@ module Corporeal
 				@defaults['database'] =
 						File.join(self.root, 'db', 'corporeal.db')
 
+				# Should be specified in the configuration file
+				@defaults['http_server'] = ""
+
 				# Specify some defaults for the PXE boot append option
 				@defaults['kernel_cmdline'] = {
 					"ksdevice" => "bootif",
@@ -45,8 +48,8 @@ module Corporeal
 					"text" => nil
 				}
 
-				# Should be specified in the configuration file
-				@defaults['http_server'] = nil
+				# Execute tasks using `sudo`
+				@defaults['via_sudo'] = false
 			end
 
 			def load_overrides
