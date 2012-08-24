@@ -8,6 +8,7 @@ require 'corporeal/config'
 require 'corporeal/data'
 require 'corporeal/action'
 require 'corporeal/template'
+require 'corporeal/util'
 
 module Corporeal
 	class Cli < Thor
