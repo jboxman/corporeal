@@ -32,9 +32,15 @@ module Corporeal
 					validates_format_of :name, :with => /^[A-Za-z0-9_-]+$/
 					validates_uniqueness_of :name
 
-					validates_format_of :kernel_path, :with => /^\/.+/
-					validates_format_of :initrd_path, :with => /^\/.+/
-					validates_format_of :kickstart_path, :with => /^\/.+/
+					validates_format_of :kernel_path,
+							:with => /^\/.+/,
+							:unless => lambda {|o| o.kernel_path.nil?}
+					validates_format_of :initrd_path,
+							:with => /^\/.+/,
+							:unless => lambda {|o| o.initrd_path.nil?}
+					validates_format_of :kickstart_path,
+							:with => /^\/.+/,
+							:unless => lambda {|o| o.kickstart_path.nil?}
 				end
 			end
 

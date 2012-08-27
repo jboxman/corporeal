@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), "spec_helper")
 
 require "corporeal/template/base"
-require "corporeal/template/pxe_linux"
+require "corporeal/template/pixie"
 
 describe Corporeal::Template::Base do
 	let(:tpl) do
@@ -21,7 +21,7 @@ describe Corporeal::Template::Base do
 	end
 end
 
-describe Corporeal::Template::PxeLinux do
+describe Corporeal::Template::Pixie do
 	let(:tpl) do
 		"text <%= cmdline %>"
 	end

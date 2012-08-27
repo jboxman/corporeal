@@ -3,24 +3,27 @@ require "corporeal/data"
 
 shared_context "setup" do |klass|
 	def create_distro(name)
-		Corporeal::Data::Distro.create(
+		# Should be first_or_create(find, create)
+		o = Corporeal::Data::Distro.create(
 			:name => name,
 			:arch => 'x86_64',
-			:initrd_path => '/var/lib/tftp/images/initrd.img',
-			:kernel_path => '/var/lib/tftp/images/linuz',
+			:initrd_path => '/images/initrd.img',
+			:kernel_path => '/images/linuz',
 			:kernel_cmdline => {
 		                        "root" => "/dev/mapper/vg-root",
 		                        "ro" => nil,
 		                        "LANG"=> "en_US.UTF-8"
 		                       },
-			:kickstart_path => 'tpl/ks/default.erb',
+			:kickstart_path => '/tpl/ks/default.erb',
 			:kickstart_variables => {"key" => "val"})
+		#o.valid? ? o : raise("Invalid Distro")
 	end
 
 	def create_profile(name, distro)
-		Corporeal::Data::Profile.create(
+		o = Corporeal::Data::Profile.create(
 			:name => name,
 			:distro => Corporeal::Data::Distro.first(:name => distro))
+		#o.valid? ? o : raise("Invalid Profile")
 	end
 
 	def create_system(name, profile)
@@ -29,6 +32,7 @@ shared_context "setup" do |klass|
 			:profile => Corporeal::Data::Profile.first(:name => profile),
 			:ip => IPAddr.new('172.16.100.1'),
 			:hwaddr => 'ff:ff:ff:ff:ff:ff')
+		#o.valid? ? o : raise("Invalid System")
 	end
 
 	before do
@@ -124,8 +128,8 @@ describe Corporeal::Data::Profile do
 
 	it "should merge attributes with its Distro" do
 		o = {
-			:kernel_path => '/var/lib/tftp/images/linux.img',
-			:initrd_path => '/var/lib/tftp/images/alternate.img'
+			:kernel_path => '/images/linux.img',
+			:initrd_path => '/images/alternate.img'
 		}
 
 		o.each do |k, v|
@@ -164,9 +168,9 @@ describe Corporeal::Data::System do
 	end
 
 	it "should transform hw addr to upper case" do
-		hwaddr = '00:1e:ff:ff:ff:ff'
+		hwaddr = '00:1e:FF:FF:FF:ff'
 		server.update(:hwaddr => hwaddr)
-		server.attributes[:hwaddr].should == hwaddr.upcase
+		server.attributes[:hwaddr].should == hwaddr.downcase
 	end
 
 	it "should have an IP address described by IPAddr" do
