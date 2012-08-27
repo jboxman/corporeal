@@ -19,11 +19,18 @@ module Corporeal
 	module Template
 
 		class Base
-			attr_reader :variables
+			attr_reader :vars
 			attr_reader :template
 
-			def initialize(variables, template)
-				@variables = variables
+			class << self
+				def render_to_file(vars, template, &blk)
+					t = new(vars, template)
+					t.render_to_file &blk
+				end
+			end
+
+			def initialize(vars, template)
+				@vars = vars
 				@template = template
 			end
 
@@ -51,7 +58,7 @@ module Corporeal
 
 			def render
 				eruby = Erubis::Eruby.new(template)
-				context = context_klass.new(variables)
+				context = context_klass.new(vars)
 				eruby.evaluate(context)
 			end
 

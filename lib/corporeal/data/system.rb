@@ -27,7 +27,7 @@ module Corporeal
 			property :chef_attributes, Object, :default => lambda {Hash.new}
 
 			def hwaddr=(value)
-				super(value.nil? ? nil : value.upcase)
+				super(value.nil? ? nil : value.downcase)
 			end
 
 			def ip=(value)

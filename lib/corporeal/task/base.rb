@@ -35,7 +35,7 @@ module Corporeal
 
 					desc "edit [NAME]", "Edit"
 					def edit(name)
-						action_edit(name, options)
+						edit_action(name, options)
 					end
 
 					desc "delete [NAME]", "Delete"

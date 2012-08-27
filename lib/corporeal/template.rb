@@ -1,4 +1,3 @@
 require 'corporeal/template/base'
-require 'corporeal/template/pxe_linux'
+require 'corporeal/template/pixie'
 require 'corporeal/template/kickstart'
-

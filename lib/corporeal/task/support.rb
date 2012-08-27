@@ -1,7 +1,14 @@
+require 'pp'
+
 module Corporeal
 	module Task
 
 		class Support < Thor
+			desc "config", "Show configuration"
+			def config
+				pp Config.all
+			end
+
 			desc "sync", "Sync configuration"
 			option :pxe, :type => :boolean, :default => false
 			option :dns, :type => :boolean, :default => false

@@ -12,6 +12,21 @@ module Corporeal
 				File.join(root, 'config', 'config.yml')
 			end
 
+			def all
+				unless @config
+					load_defaults
+					load_overrides
+				end
+				@config.dup
+			end
+
+			def default(key)
+				unless @defaults
+					load_defaults
+				end
+				@defaults[key]
+			end
+
 			def get(key)
 				unless @config
 					load_defaults

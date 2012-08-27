@@ -1,0 +1,7 @@
+default linux
+prompt 0
+timeout 1
+label linux
+        KERNEL <%= @kernel_path %>
+        APPEND <%= cmdline %>
+        ipappend 2

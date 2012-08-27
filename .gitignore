@@ -1,3 +1,4 @@
 *~
 *.kate-swp
 config.yml
+tftp/*
