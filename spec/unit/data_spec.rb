@@ -1,3 +1,4 @@
+require File.join(File.dirname(__FILE__), "spec_helper")
 require "corporeal/data"
 
 shared_context "setup" do |klass|

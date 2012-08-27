@@ -20,7 +20,7 @@ module Corporeal
 			end
 
 			def merged_attributes
-				Chef::Mixin::DeepMerge.deep_merge(attributes, distro.attributes)
+				DeepMerge.deep_merge!(attributes, distro.attributes)
 			end
 		end
 	end

@@ -12,7 +12,7 @@ module Corporeal
 					#
 					# Any global options
 					#
-					h.merge!(Corporeal::Config.get('kernel_cmdline'))
+					h.merge!(DeepMerge.deep_merge!(@kernel_cmdline, Corporeal::Config.get('kernel_cmdline')))
 					#
 					# Our initrd image
 					#
@@ -21,10 +21,7 @@ module Corporeal
 					# Our kickstart file
 					#
 					h.merge!('ks' => "http://#{Config.get('http_server')}/")
-					#
-					# Our unified cmdline
-					#
-					h.merge!(@kernel_cmdline)
+
 					h.stringify
 				end
 			end

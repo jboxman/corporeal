@@ -1,6 +1,4 @@
-require 'rubygems'
 require 'data_mapper'
-require 'chef/mixin/deep_merge'
 
 DataMapper::Property::String.length(255)
 
@@ -33,6 +31,10 @@ module Corporeal
 
 					validates_format_of :name, :with => /^[A-Za-z0-9_-]+$/
 					validates_uniqueness_of :name
+
+					validates_format_of :kernel_path, :with => /^\/.+/
+					validates_format_of :initrd_path, :with => /^\/.+/
+					validates_format_of :kickstart_path, :with => /^\/.+/
 				end
 			end
 

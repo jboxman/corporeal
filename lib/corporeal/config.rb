@@ -1,5 +1,4 @@
 require 'yaml'
-require 'chef/mixin/deep_merge'
 
 module Corporeal
 	class Config
@@ -70,7 +69,7 @@ module Corporeal
 			def load_overrides
 				unless @overrides
 					@overrides = YAML.load_file(config_path)
-					@config = Chef::Mixin::DeepMerge.deep_merge(
+					@config = DeepMerge.deep_merge!(
 						@overrides, @defaults)
 				end
 			end

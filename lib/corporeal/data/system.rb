@@ -53,7 +53,7 @@ module Corporeal
 			end
 
 			def merged_attributes
-				Chef::Mixin::DeepMerge.deep_merge(
+				DeepMerge.deep_merge!(
 					attributes, profile.merged_attributes)
 			end
 		end
