@@ -54,7 +54,8 @@ module Corporeal
 
 			def merged_attributes
 				DeepMerge.deep_merge!(
-					attributes, profile.merged_attributes)
+					attributes.merge(:klass => klass_name),
+					profile.merged_attributes)
 			end
 		end
 	end

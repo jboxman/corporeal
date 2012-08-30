@@ -47,6 +47,12 @@ module Corporeal
 			# Override
 			def merged_attributes
 			end
+
+			private
+
+			def klass_name
+				self.class.to_s.split(/::/).last.downcase
+			end
 		end
 	end
 end

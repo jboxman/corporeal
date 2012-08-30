@@ -20,7 +20,9 @@ module Corporeal
 			end
 
 			def merged_attributes
-				DeepMerge.deep_merge!(attributes, distro.attributes)
+				DeepMerge.deep_merge!(
+					attributes.merge(:klass => klass_name),
+					distro.attributes)
 			end
 		end
 	end

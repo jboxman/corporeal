@@ -1,47 +1,8 @@
 require File.join(File.dirname(__FILE__), "spec_helper")
+require "corporeal/database"
 require "corporeal/data"
 
-shared_context "setup" do |klass|
-	def create_distro(name)
-		# Should be first_or_create(find, create)
-		o = Corporeal::Data::Distro.create(
-			:name => name,
-			:arch => 'x86_64',
-			:initrd_path => '/images/initrd.img',
-			:kernel_path => '/images/linuz',
-			:kernel_cmdline => {
-		                        "root" => "/dev/mapper/vg-root",
-		                        "ro" => nil,
-		                        "LANG"=> "en_US.UTF-8"
-		                       },
-			:kickstart_path => '/tpl/ks/default.erb',
-			:kickstart_variables => {"key" => "val"})
-		#o.valid? ? o : raise("Invalid Distro")
-	end
-
-	def create_profile(name, distro)
-		o = Corporeal::Data::Profile.create(
-			:name => name,
-			:distro => Corporeal::Data::Distro.first(:name => distro))
-		#o.valid? ? o : raise("Invalid Profile")
-	end
-
-	def create_system(name, profile)
-		o = Corporeal::Data::System.create(
-			:name => name,
-			:profile => Corporeal::Data::Profile.first(:name => profile),
-			:ip => IPAddr.new('172.16.100.1'),
-			:hwaddr => 'ff:ff:ff:ff:ff:ff')
-		#o.valid? ? o : raise("Invalid System")
-	end
-
-	before do
-		DataMapper::Logger.new($stdout, :info)
-		DataMapper.setup(:default, 'sqlite::memory:')
-		DataMapper.finalize
-		klass.auto_migrate!
-	end
-end
+Corporeal::Database.prepare!(true)
 
 shared_examples "common" do
 	it "should inherit Base properties" do
@@ -63,7 +24,7 @@ end
 
 describe Corporeal::Data::Distro do
 
-	include_context "setup", Corporeal::Data::Distro
+	include_context "data_helpers"
 	include_examples "common"
 
 	let(:distro) { create_distro("somelinux") ; Corporeal::Data::Distro.first }
@@ -109,7 +70,7 @@ end
 
 describe Corporeal::Data::Profile do
 
-	include_context "setup", Corporeal::Data::Profile
+	include_context "data_helpers"
 	include_examples "common"
 
 	before do
@@ -150,7 +111,7 @@ end
 
 describe Corporeal::Data::System do
 
-	include_context "setup", Corporeal::Data::System
+	include_context "data_helpers"
 	include_examples "common"
 
 	before do

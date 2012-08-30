@@ -4,7 +4,9 @@ lib = File.expand_path('../../lib', __FILE__)
 $:.unshift(lib) unless $:.include?(lib)
 
 require 'config/boot'
+require 'corporeal/database'
 require 'corporeal/cli'
 require 'corporeal/task'
 
+Corporeal::Database.prepare!
 Corporeal::Cli.start

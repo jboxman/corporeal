@@ -1,0 +1,8 @@
+#
+# Patterns to exclude from an import
+#
+**/debug/**
+**/alpha/**
+**/source/**
+**/SRPMS/**
+**/*.iso

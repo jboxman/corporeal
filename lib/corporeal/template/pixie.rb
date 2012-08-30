@@ -18,9 +18,13 @@ module Corporeal
 					#
 					h.merge!('initrd' => @initrd_path)
 					#
-					# Our kickstart file
+					# Our kickstart URL
 					#
-					h.merge!('ks' => "http://#{Config.get('http_server')}/")
+
+					path = "http://"
+					path << Config.get('http_server')
+					path << "/kick/#{@klass}/#{@id}"
+					h.merge!('ks' => path)
 
 					h.stringify
 				end

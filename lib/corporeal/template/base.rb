@@ -23,6 +23,11 @@ module Corporeal
 			attr_reader :template
 
 			class << self
+				def render(vars, template)
+					t = new(vars, template)
+					t.render
+				end
+
 				def render_to_file(vars, template, &blk)
 					t = new(vars, template)
 					t.render_to_file &blk

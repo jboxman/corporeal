@@ -4,6 +4,12 @@ module Corporeal
 	module Task
 
 		class Support < Thor
+			desc "init", "Initialize"
+			def init
+				# Make any missing directories
+				# Create database, although it happens automatically now
+			end
+
 			desc "config", "Show configuration"
 			def config
 				pp Config.all
