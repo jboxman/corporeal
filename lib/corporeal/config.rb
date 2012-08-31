@@ -26,6 +26,11 @@ module Corporeal
 				@defaults[key]
 			end
 
+			def set(key, value)
+				@overrides ||= {}
+				@overrides[key.to_s] = value
+			end
+
 			def get(key)
 				unless @config
 					load_defaults
@@ -52,7 +57,7 @@ module Corporeal
 						File.join(self.root, 'db', 'corporeal.db')
 
 				# Should be specified in the configuration file
-				@defaults['http_server'] = ""
+				@defaults['http_server'] = %x[hostname -f].chomp
 
 				# Specify some defaults for the PXE boot append option
 				@defaults['kernel_cmdline'] = {
@@ -61,17 +66,14 @@ module Corporeal
 					"kssendmac" => nil,
 					"text" => nil
 				}
-
-				# Execute tasks using `sudo`
-				@defaults['via_sudo'] = false
 			end
 
 			def load_overrides
 				unless @overrides
 					@overrides = YAML.load_file(config_path)
-					@config = DeepMerge.deep_merge!(
-						@overrides, @defaults)
 				end
+				@config = DeepMerge.deep_merge!(
+					@overrides, @defaults)
 			end
 
 		end

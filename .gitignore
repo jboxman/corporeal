@@ -4,3 +4,4 @@
 *.yml
 .bundle
 tftp/*
+vendor/*

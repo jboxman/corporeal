@@ -19,9 +19,13 @@ module Corporeal
 				self.distro.name
 			end
 
+			def variables
+				attributes.merge(:klass => klass_name, :distro_name => distro_name)
+			end
+
 			def merged_attributes
 				DeepMerge.deep_merge!(
-					attributes.merge(:klass => klass_name),
+					variables,
 					distro.attributes)
 			end
 		end

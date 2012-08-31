@@ -52,14 +52,12 @@ module Corporeal
 
 			def self.save_template(vars, tpl, dest)
 				Template::Pixie.render_to_file(vars, tpl) do |rendered|
-					unless Config.get('via_sudo')
-						FileUtils.mv(rendered.path, dest)
-					else
-						# Requires `sudo` be properly configured
-						system("sudo mv #{rendered.path} #{dest}")
-						system("sudo chown root:root #{dest}")
-						system("sudo chmod g+r,o+r #{dest}")
-						system("sudo chcon -u system_u -r object_r -t tftpdir_t #{dest}")
+					FileUtils.mv(rendered.path, dest)
+					FileUtils.chmod(0644, dest)
+
+					# Respect SELinux contexts
+					if File.exists?('/usr/bin/chcon')
+						system("chcon -u system_u -r object_r -t tftpdir_t #{dest}")
 					end
 				end
 			end

@@ -4,6 +4,12 @@ module Corporeal
 		class Kickstart < Base
 
 			class Context < Erubis::Context
+				def url
+					url = "http://"
+					url << Corporeal::Config.get('http_server')
+					url << "/mirror/#{@distro_name}"
+					"url --url=#{url}"
+				end
 			end
 
 			private

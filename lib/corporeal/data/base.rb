@@ -48,6 +48,10 @@ module Corporeal
 			def merged_attributes
 			end
 
+			def variables
+				attributes.merge(:klass => klass_name)
+			end
+
 			private
 
 			def klass_name

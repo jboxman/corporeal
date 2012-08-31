@@ -24,9 +24,14 @@ module Corporeal
 				tpl_path = File.join(
 					Config.get('template_root'),
 					'kickstart',
-					'default.ks.erb')
-				tpl = IO.read(tpl_path)
-				body Template::Kickstart.render(o.merged_attributes, tpl)
+					@system.merged_attributes[:kickstart_path])
+				if File.exists?(tpl_path)
+					tpl = IO.read(tpl_path)
+					body Template::Kickstart.render(o.merged_attributes, tpl)
+				else
+					status 500
+					body 'Template not found!'
+				end
 			else
 				status 404
 				body 'Could not find System!'

@@ -1,5 +1,3 @@
-require 'pp'
-
 module Corporeal
 	module Task
 
@@ -12,7 +10,7 @@ module Corporeal
 
 			desc "config", "Show configuration"
 			def config
-				pp Config.all
+				puts Config.all.to_yaml
 			end
 
 			desc "sync", "Sync configuration"
