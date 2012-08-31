@@ -25,7 +25,7 @@ module Corporeal
 			class << self
 				def render(vars, template)
 					t = new(vars, template)
-					t.render
+					t.to_s
 				end
 
 				def render_to_file(vars, template, &blk)
@@ -43,10 +43,6 @@ module Corporeal
 				render
 			end
 
-			def render_to_string &blk
-				yield render
-			end
-
 			def render_to_file &blk
 				Tempfile.open("corporeal-rendered-template") do |tempfile|
 					tempfile.print(render)
@@ -54,10 +50,6 @@ module Corporeal
 					yield tempfile
 				end
 			end
-
-			# Need to merge in special variables
-			# - proper ks= for kernel_cmdline
-			# - proper value for url= in kickstart
 
 			private
 

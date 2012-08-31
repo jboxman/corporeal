@@ -14,7 +14,7 @@ shared_context "data_helpers" do
 		                        "ro" => nil,
 		                        "LANG"=> "en_US.UTF-8"
 		                       },
-			:kickstart_path => '/tpl/ks/default.erb',
+			:kickstart_path => '/tpl/kickstart/default.ks.erb',
 			:kickstart_variables => {"key" => "val"})
 		#o.valid? ? o : raise("Invalid Distro")
 	end
@@ -26,12 +26,12 @@ shared_context "data_helpers" do
 		#o.valid? ? o : raise("Invalid Profile")
 	end
 
-	def create_system(name, profile)
-		o = Corporeal::Data::System.create(
+	def create_system(name, profile, attrs)
+		o = Corporeal::Data::System.create(attrs.merge(
 			:name => name,
 			:profile => Corporeal::Data::Profile.first(:name => profile),
 			:ip => IPAddr.new('172.16.100.1'),
-			:hwaddr => 'ff:ff:ff:ff:ff:ff')
+			:hwaddr => 'ff:ff:ff:ff:ff:ff'))
 		#o.valid? ? o : raise("Invalid System")
 	end
 end

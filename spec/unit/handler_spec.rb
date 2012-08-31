@@ -9,8 +9,9 @@ require 'rack/test'
 ENV['RACK_ENV'] = 'test'
 
 Corporeal::Database.prepare!(true)
-Corporeal::Config.set('template_root', File.join(File.dirname(__FILE__), '..'))
-puts Corporeal::Config.get('template_root')
+Corporeal::Config.set(
+	'template_root',
+	File.expand_path(File.join(File.dirname(__FILE__), '..', 'artifacts')))
 
 describe 'Handler' do
 	include Rack::Test::Methods
@@ -24,11 +25,10 @@ describe 'Handler' do
 	before do
 		create_distro("d1")
 		create_profile("p1", "d1")
-		create_system("s1", "p1")
+		create_system("s1", "p1", :kickstart_path => '/default.ks.erb')
 	end
 
 	it "test" do
-		puts Corporeal::Data::System.first(1)[0].merged_attributes.inspect
 		get '/kick/system/1'
 		puts last_response.body
 	end
