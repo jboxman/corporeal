@@ -1,5 +1,5 @@
 ENV['RACK_ENV'] = "test"
-require File.expand_path(File.dirname(__FILE__) + "/../../config/boot")
+require File.expand_path(File.dirname(__FILE__) + "/../../lib/corporeal/boot")
 
 shared_context "data_helpers" do
 	def create_distro(name)
@@ -26,7 +26,7 @@ shared_context "data_helpers" do
 		#o.valid? ? o : raise("Invalid Profile")
 	end
 
-	def create_system(name, profile, attrs)
+	def create_system(name, profile, attrs={})
 		o = Corporeal::Data::System.create(attrs.merge(
 			:name => name,
 			:profile => Corporeal::Data::Profile.first(:name => profile),

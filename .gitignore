@@ -3,6 +3,7 @@
 *.swp
 *.yml
 *.tar
+*.gem
 .bundle
 tftp/*
 vendor/*

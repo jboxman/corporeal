@@ -77,7 +77,7 @@ module Corporeal
 					begin
 						@overrides = YAML.load_file(config_path)
 					rescue Errno::ENOENT
-						raise StandardError, "Config file not found!"
+						@overrides = {}
 					end
 				end
 				@config = DeepMerge.deep_merge!(
