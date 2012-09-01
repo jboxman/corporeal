@@ -8,7 +8,11 @@ module Corporeal
 			end
 
 			def config_path
-				File.join(root, 'config', 'config.yml')
+				paths = [
+					'/etc/corporeal/config.yml',
+					File.join(root, 'config', 'config.yml')
+				]
+				paths.select {|path| File.exists?(path)}.first || ""
 			end
 
 			def all
@@ -70,7 +74,11 @@ module Corporeal
 
 			def load_overrides
 				unless @overrides
-					@overrides = YAML.load_file(config_path)
+					begin
+						@overrides = YAML.load_file(config_path)
+					rescue Errno::ENOENT
+						raise StandardError, "Config file not found!"
+					end
 				end
 				@config = DeepMerge.deep_merge!(
 					@overrides, @defaults)

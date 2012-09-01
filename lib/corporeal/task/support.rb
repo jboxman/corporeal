@@ -5,12 +5,6 @@ module Corporeal
 			desc "init", "Initialize"
 			def init
 				# Make any missing directories
-				# Create database, although it happens automatically now
-			end
-
-			desc "config", "Show configuration"
-			def config
-				puts Config.all.to_yaml
 			end
 
 			desc "sync", "Sync configuration"

@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-#require "shadow_path/version"
+require "corporeal/version"
 
 Gem::Specification.new do |s|
   s.name        = "corporeal"
-  s.version     = "0.0.1"
+  s.version     = Corporeal::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Jason Boxman"]
   s.email       = ["jasonb@edseek.com"]
@@ -20,11 +20,16 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "thor", "~> 0.15"
+  s.add_dependency "json"
+  s.add_dependency "erubis"
+  s.add_dependency "sinatra"
+  s.add_dependency "data_mapper", "~> 1.2.0"
+  s.add_dependency "dm-sqlite-adapter"
+  s.add_dependency "mixlib-shellout", ">= 1.0.0.rc.1"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
+  s.add_development_dependency "rack-test"
   s.add_development_dependency "fakefs"
 
-  s.add_dependency "mixlib-shellout", ">= 1.0.0.rc.1"
-  s.add_dependency "chef", "~> 10.12"
 end
