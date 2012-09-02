@@ -22,7 +22,7 @@ module Corporeal
 			@system = Data::System.first(:id => params[:id])
 			if @system
 				tpl_path = File.join(
-					Config.get('template_root'),
+					Config.get('template_path'),
 					'kickstart',
 					@system.merged_attributes[:kickstart_path])
 				if File.exists?(tpl_path)

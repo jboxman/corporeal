@@ -14,7 +14,7 @@ module Corporeal
 
 				Data::Profile.all.each do |o|
 					tpl_path = File.join(
-						Config.get('template_root'),
+						Config.get('template_path'),
 						'pixie',
 						'profile.erb')
 					tpl = IO.read(tpl_path)
@@ -23,16 +23,16 @@ module Corporeal
 				end
 
 				tpl_path = File.join(
-					Config.get('template_root'),
+					Config.get('template_path'),
 					'pixie',
 					'default.erb')
 				tpl = IO.read(tpl_path)
 
-				dest = File.join(Config.get('pxe_root'), 'pxelinux.cfg', 'default')
+				dest = File.join(Config.get('tftp_path'), 'pxelinux.cfg', 'default')
 				self.save_template(h, tpl, dest)
 
 				tpl_path = File.join(
-					Config.get('template_root'),
+					Config.get('template_path'),
 					'pixie',
 					'system.erb')
 				tpl = IO.read(tpl_path)
@@ -40,7 +40,7 @@ module Corporeal
 				# For each system
 				Data::System.all(:hwaddr.not => nil).each do |o|
 					dest = File.join(
-						Config.get('pxe_root'),
+						Config.get('tftp_path'),
 						'pxelinux.cfg',
 						o.hwaddr.gsub(/:/, '-'))
 					self.save_template(o.merged_attributes, tpl, dest)

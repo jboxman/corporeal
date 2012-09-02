@@ -9,9 +9,11 @@ module Corporeal
 
 			def config_path
 				paths = [
-					'/etc/corporeal/config.yml',
 					File.join(root, 'config', 'config.yml')
 				]
+				if !git?
+					paths.unshift('/etc/corporeal/config.yml')
+				end
 				paths.select {|path| File.exists?(path)}.first || ""
 			end
 
@@ -49,11 +51,11 @@ module Corporeal
 				@defaults = {}
 
 				# Configure some default paths relative to root
-				@defaults['template_root'] =
+				@defaults['template_path'] =
 						File.join(self.root, 'tpl')
-				@defaults['web_root'] =
+				@defaults['web_path'] =
 						File.join(self.root, 'web')
-				@defaults['pxe_root'] =
+				@defaults['tftp_path'] =
 						File.join(self.root, 'tftp')
 
 				# Configure the sqlite database path
@@ -78,10 +80,23 @@ module Corporeal
 						@overrides = YAML.load_file(config_path)
 					rescue Errno::ENOENT
 						@overrides = {}
+					ensure
+						@overrides ||= {}
 					end
 				end
+
+				@overrides.each_key do |key|
+					unless @defaults.keys.include?(key)
+						raise StandardError, "Invalid config key '#{key}'!"
+					end
+				end
+
 				@config = DeepMerge.deep_merge!(
 					@overrides, @defaults)
+			end
+
+			def git?
+				File.exists?(File.join(self.root, '.git'))
 			end
 
 		end
