@@ -2,10 +2,6 @@ module Corporeal
 	module Task
 
 		class Support < Thor
-			desc "init", "Initialize"
-			def init
-				# Make any missing directories
-			end
 
 			desc "sync", "Sync configuration"
 			option :pxe, :type => :boolean, :default => false

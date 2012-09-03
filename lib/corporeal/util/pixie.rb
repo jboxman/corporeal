@@ -8,6 +8,8 @@ module Corporeal
 	module Util
 
 		class Pixie
+			# TODO
+			# Need to delete files from the directory first!
 			def self.sync
 				h = {}
 				h['items'] = ""

@@ -9,12 +9,12 @@ module Corporeal
 
 			def config_path
 				paths = [
-					File.join(root, 'config', 'config.yml')
+					File.join(root, 'config')
 				]
 				if !git?
-					paths.unshift('/etc/corporeal/config.yml')
+					paths.unshift('/etc/corporeal')
 				end
-				paths.select {|path| File.exists?(path)}.first || ""
+				paths
 			end
 
 			def all
@@ -77,7 +77,7 @@ module Corporeal
 			def load_overrides
 				unless @overrides
 					begin
-						@overrides = YAML.load_file(config_path)
+						@overrides = YAML.load_file(override_yaml)
 					rescue Errno::ENOENT
 						@overrides = {}
 					ensure
@@ -93,6 +93,15 @@ module Corporeal
 
 				@config = DeepMerge.deep_merge!(
 					@overrides, @defaults)
+			end
+
+			def override_yaml
+				paths = config_path.collect do |yaml|
+					File.join(yaml, 'config.yml')
+				end
+				paths.select do |path|
+					File.exists?(path)
+				end.first || ""
 			end
 
 			def git?
