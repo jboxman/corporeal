@@ -7,6 +7,10 @@ gem 'data_mapper', '~>1.2.0'
 gem 'dm-sqlite-adapter'
 gem 'sinatra'
 
+group :development do
+	gem 'thin'
+end
+
 group :test do
 	gem 'rspec'
 	gem 'rack-test'

@@ -8,6 +8,8 @@ module Corporeal
 
 	class Handler < Sinatra::Base
 
+		set :public_folder, Config.get('web_path')
+
 		# TODO
 		# Add hook for disabling system
 		# Add hook for registering bootif hwaddr
