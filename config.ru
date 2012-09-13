@@ -1,5 +1,4 @@
 lib = File.expand_path('lib', File.dirname(__FILE__))
-puts lib.inspect
 $:.unshift(lib) unless $:.include?(lib)
 
 require 'corporeal/boot'
