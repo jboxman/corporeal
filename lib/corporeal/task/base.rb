@@ -2,6 +2,8 @@ module Corporeal
 	module Task
 
 		class Base < Thor
+			class_option :disabled, :type => :boolean,
+					:desc => 'Disable netboot'
 			class_option :arch, :type => :string,
 				:desc => 'i386 or x86_64'
 			class_option :initrd_path, :type => :string,

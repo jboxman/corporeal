@@ -8,11 +8,11 @@ module Corporeal
 	module Util
 
 		class Pixie
-			# TODO
-			# Need to delete files from the directory first!
 			def self.sync
 				h = {}
 				h['items'] = ""
+
+				self.scrub!
 
 				Data::Profile.all.each do |o|
 					tpl_path = File.join(
@@ -30,7 +30,7 @@ module Corporeal
 					'default.erb')
 				tpl = IO.read(tpl_path)
 
-				dest = File.join(Config.get('tftp_path'), 'pxelinux.cfg', 'default')
+				dest = self.tftp_path('default')
 				self.save_template(h, tpl, dest)
 
 				tpl_path = File.join(
@@ -39,18 +39,31 @@ module Corporeal
 					'system.erb')
 				tpl = IO.read(tpl_path)
 
-				# For each system
-				Data::System.all(:hwaddr.not => nil).each do |o|
-					dest = File.join(
-						Config.get('tftp_path'),
-						'pxelinux.cfg',
-						o.hwaddr.gsub(/:/, '-'))
+				Data::System.all(
+					:hwaddr.not => nil,
+					:disabled.not => true).each do |o|
+					dest = self.tftp_path("01-#{o.hwaddr.gsub(/:/, '-')}")
 					self.save_template(o.merged_attributes, tpl, dest)
 				end
 
 			end
 
 			private
+
+			def self.tftp_path(file)
+				File.join(
+					Config.get('tftp_path'),
+					'pxelinux.cfg',
+					file)
+			end
+
+			def self.scrub!
+				Dir["#{Config.get('tftp_path')}/pxelinux.cfg/*"].each do |file|
+					f = File.basename(file)
+					next unless f[0..2] == '01-' || f == 'default'
+					FileUtils.rm(self.tftp_path(f))
+				end
+			end
 
 			def self.save_template(vars, tpl, dest)
 				Template::Pixie.render_to_file(vars, tpl) do |rendered|

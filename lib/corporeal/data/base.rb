@@ -38,9 +38,11 @@ module Corporeal
 					validates_format_of :initrd_path,
 							:with => /^\/.+/,
 							:unless => lambda {|o| o.initrd_path.nil?}
-					validates_format_of :kickstart_path,
-							:with => /^\/.+/,
-							:unless => lambda {|o| o.kickstart_path.nil?}
+					# TODO
+					# - Disallow leading slash
+					#validates_format_of :kickstart_path,
+					#		:with => /^\/.+/,
+					#		:unless => lambda {|o| o.kickstart_path.nil?}
 				end
 			end
 

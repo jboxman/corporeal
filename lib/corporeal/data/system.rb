@@ -9,21 +9,22 @@ module Corporeal
 
 			belongs_to :profile
 
-			HWADDR_REGEXP = Regexp.new(/[0-9A-Za-z]{2,2}:
-			                           [0-9A-Za-z]{2,2}:
-			                          [0-9A-Za-z]{2,2}:
-			                          [0-9A-Za-z]{2,2}:
-			                          [0-9A-Za-z]{2,2}:
+			HWADDR_REGEXP = Regexp.new(/[0-9A-Za-z]{2,2}:?
+			                           [0-9A-Za-z]{2,2}:?
+			                          [0-9A-Za-z]{2,2}:?
+			                          [0-9A-Za-z]{2,2}:?
+			                          [0-9A-Za-z]{2,2}:?
 			                          [0-9A-Za-z]{2,2}/x)
 
 			validates_presence_of :profile
-			validates_presence_of :hwaddr, :if => lambda {|o| !o.hwaddr.nil? && o.hwaddr.length == 17}
-			validates_format_of :hwaddr, :with => HWADDR_REGEXP
+			validates_format_of :hwaddr, :with => HWADDR_REGEXP,
+					:if => lambda {|t| !t.hwaddr.nil?}
 			validates_uniqueness_of :hwaddr
 
 			# System Attributes
 			property :hwaddr, String
 			property :ip, Object
+			property :disabled, Boolean, :default => false
 			property :chef_attributes, Object, :default => lambda {Hash.new}
 
 			def hwaddr=(value)

@@ -5,5 +5,5 @@
 *.tar
 *.gem
 .bundle
-tftp/*
 vendor/*
+tftp/*

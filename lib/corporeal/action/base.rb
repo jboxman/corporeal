@@ -1,3 +1,5 @@
+require 'yaml'
+
 module Corporeal
 	module Action
 
@@ -19,15 +21,17 @@ module Corporeal
 				end
 			end
 
-			# Need merged option, too!
+			# TODO
+			# - Need merged option, too!
 			def show
 				o = data_klass.first(:name => name)
 				if o
-					require 'pp'
-					pp o.attributes
+					puts o.attributes.to_yaml
 				end
 			end
 
+			# TODO
+			# - Need better error messages
 			def create
 				o = data_klass.new options.merge(:name => name)
 				if o.save

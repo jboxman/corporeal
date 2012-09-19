@@ -25,11 +25,9 @@ Gem::Specification.new do |s|
   s.add_dependency "sinatra"
   s.add_dependency "data_mapper", "~> 1.2.0"
   s.add_dependency "dm-sqlite-adapter"
-  s.add_dependency "mixlib-shellout", ">= 1.0.0.rc.1"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
   s.add_development_dependency "rack-test"
-  s.add_development_dependency "fakefs"
 
 end
