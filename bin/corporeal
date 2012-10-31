@@ -1,7 +1,15 @@
 #!/usr/bin/env ruby
 
-lib = File.expand_path('../../lib', __FILE__)
-$:.unshift(lib) unless $:.include?(lib)
+require 'rubygems'
+
+if File.exists?('corporeal.gemspec')
+	lib_dir = File.expand_path('../lib', File.dirname(__FILE__))
+else
+	bin_dir = Gem.bin_path('corporeal', 'corporeal', ">= 0")
+	lib_dir = File.join('../..', bin_dir, 'lib')
+end
+
+$:.unshift(lib_dir) unless $:.include?(lib_dir)
 
 require 'corporeal/boot'
 require 'corporeal/database'

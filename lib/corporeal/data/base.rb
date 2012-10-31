@@ -29,7 +29,7 @@ module Corporeal
 							DataMapper::Property::Object,
 							:default => lambda {Hash.new}
 
-					validates_format_of :name, :with => /^[A-Za-z0-9_-]+$/
+					validates_format_of :name, :with => /^[.A-Za-z0-9_-]+$/
 					validates_uniqueness_of :name
 
 					validates_format_of :kernel_path,

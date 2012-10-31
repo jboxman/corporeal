@@ -19,7 +19,7 @@ module Corporeal
 				end
 
 				web_path = Corporeal::Config.get('web_path')
-				web_dirs = ['distros']
+				web_dirs = ['distros', 'mirrors', 'files']
 
 				web_dirs.each do |dir|
 					target = File.join(web_path, dir)
@@ -35,6 +35,7 @@ module Corporeal
 			# - Incorporate
 			#option :dns, :type => :boolean, :default => false
 			#option :dhcp, :type => :boolean, :default => false
+			#option :data, ...
 			option :all, :type => :boolean, :default => true
 			def sync
 				if options['all'] || options['pxe']

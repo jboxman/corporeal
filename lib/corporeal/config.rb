@@ -17,12 +17,17 @@ module Corporeal
 				paths
 			end
 
-			def all
+			def all &bk
 				unless @config
 					load_defaults
 					load_overrides
 				end
-				@config.dup
+
+				if block_given?
+					@config.each {|k, v| yield(k, v) }
+				else
+					@config.dup
+				end
 			end
 
 			def default(key)
@@ -62,8 +67,11 @@ module Corporeal
 				@defaults['database'] =
 						File.join(self.root, 'db', 'corporeal.db')
 
-				# Should be specified in the configuration file
+				# Can be specified in the configuration file
 				@defaults['http_server'] = %x[hostname -f].chomp
+
+				# Should be specified in configuration file
+				@defaults['root_passwd'] = ''
 
 				# Specify some defaults for the PXE boot append option
 				@defaults['kernel_cmdline'] = {

@@ -2,6 +2,7 @@ require File.join(File.dirname(__FILE__), "spec_helper")
 
 require "corporeal/template/base"
 require "corporeal/template/pixie"
+require "corporeal/template/kickstart"
 
 describe Corporeal::Template::Base do
 	let(:tpl) do
@@ -35,10 +36,22 @@ describe Corporeal::Template::Pixie do
 		                       }
 		}
 	end
-	let(:template) { Corporeal::Template::PxeLinux.new(vars, tpl) }
+	let(:template) { Corporeal::Template::Pixie.new(vars, tpl) }
 
 	it "should have a cmdline helper method" do
 		puts template.to_s
 	end
 
+end
+
+describe Corporeal::Template::Kickstart do
+	let(:tpl) do
+		"text "
+	end
+
+	let(:vars) do
+		{:kickstart_variables => {}}
+	end
+
+	let(:template) { Corporeal::Template::Kickstart.new(vars, tpl) }
 end
