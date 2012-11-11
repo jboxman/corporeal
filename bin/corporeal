@@ -3,13 +3,13 @@
 require 'rubygems'
 
 if File.exists?('corporeal.gemspec')
-	lib_dir = File.expand_path('../lib', File.dirname(__FILE__))
+	lib = File.expand_path('../lib', File.dirname(__FILE__))
 else
-	bin_dir = Gem.bin_path('corporeal', 'corporeal', ">= 0")
-	lib_dir = File.join('../..', bin_dir, 'lib')
+	spec = Gem::Specification.find_by_name('corporeal')
+	lib = File.join(spec.gem_dir, 'lib')
 end
 
-$:.unshift(lib_dir) unless $:.include?(lib_dir)
+$:.unshift(lib) unless $:.include?(lib)
 
 require 'corporeal/boot'
 require 'corporeal/database'
