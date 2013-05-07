@@ -21,6 +21,9 @@ module Corporeal
 			DataMapper.finalize
 			DataMapper.auto_upgrade!
 			DataMapper::Model.raise_on_save_failure = false
+
+		rescue DataObjects::ConnectionError
+			raise "Invalid 'database' path: #{Corporeal::Config.get('database')}"
 		end
 	end
 end

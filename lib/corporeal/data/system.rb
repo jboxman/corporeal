@@ -25,7 +25,6 @@ module Corporeal
 			property :hwaddr, String
 			property :ip, Object
 			property :disabled, Boolean, :default => false
-			property :chef_attributes, Object, :default => lambda {Hash.new}
 
 			def hwaddr=(value)
 				super(value.nil? ? nil : value.downcase)

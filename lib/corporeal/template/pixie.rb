@@ -9,18 +9,20 @@ module Corporeal
 				#
 				def cmdline
 					h = {}
+
 					#
 					# Any global options
 					#
 					h.merge!(DeepMerge.deep_merge!(@kernel_cmdline, Corporeal::Config.get('kernel_cmdline')))
+
 					#
 					# Our initrd image
 					#
 					h.merge!('initrd' => @initrd_path)
+
 					#
 					# Our kickstart URL
 					#
-
 					path = "http://"
 					path << Config.get('http_server')
 					path << "/kick/#{@klass}/#{@id}"

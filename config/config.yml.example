@@ -1,0 +1,9 @@
+---
+  tftp_path: /tftpboot
+  web_path: /var/www/corporeal
+  template_path: /var/lib/corporeal/tpl
+  database: /var/lib/corporeal/db/corporeal.db
+  #
+  # Change to something secure!
+  #
+  root_passwd: $6$h2DnxnS4$CixAi0htL6qk7H4n00hl1bsHsLzlMxPRnt8dXgFN3o44WF8WrCHnQZfdqzBigZw8Uude4sy7yKDmxMxDw04KW.

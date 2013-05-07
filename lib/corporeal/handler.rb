@@ -16,7 +16,6 @@ module Corporeal
 
 		# TODO
 		# Add hook for disabling system
-		# Add hook for sending out chef_attributes to client
 		# Hook for cloning distros, profiles, and specific system
 
 		get '/kick/profile/:id' do
@@ -47,10 +46,6 @@ module Corporeal
 
 		# Log success and disable
 		get '/hook/success/:id' do
-		end
-
-		# Request chef_attributes as JSON
-		get '/hook/chef_attributes/:id' do
 		end
 
 		# Request kickstart_variables as JSON

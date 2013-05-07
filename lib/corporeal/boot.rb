@@ -3,6 +3,12 @@ ENV["RACK_ENV"] ||= "development"
 require 'ext/deep_merge'
 require 'rubygems'
 
+#
+# If Bundler cannot be found, then assume --standalone
+#
+# `bundle install --standalone --deployment --path=vendor/bundle`
+#
+
 begin
 	require 'bundler'
 	begin

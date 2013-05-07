@@ -7,8 +7,6 @@ module Corporeal
 
 			belongs_to :distro
 
-			property :chef_attributes, Object, :default => lambda {Hash.new}
-
 			validates_presence_of :distro
 
 			def distro_name=(value)
